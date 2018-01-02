@@ -21,7 +21,7 @@ client.on("message", message => {
             };
             
               template.textChannels = message.guild.channels.filterArray(c => c.type === "text").sort((a,b) => {return a.position - b.position}).map(c => c.name);
-              template.textChannelTopic = message.guild.channels.filter(c => c.type === "text").sort((a,b) => {return a.position - b.position}).map(c => c.topic);
+              template.textChannelTopic = message.guild.channels.filterArray(c => c.type === "text").sort((a,b) => {return a.position - b.position}).map(c => c.topic);
               template.voiceChannels = message.guild.channels.filterArray(c => c.type === "voice").sort((a,b) => {return a.position - b.position}).map(c => c.name);
               template.roles = message.guild.roles.sort((a,b) => {return a.position - b.position}).map(r => r.name);
               template.roleColors = message.guild.roles.sort((a,b) => {return a.position - b.position}).map(r => r.hexColor);

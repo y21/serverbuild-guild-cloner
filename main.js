@@ -19,11 +19,12 @@ client.on("message", message => {
                 servername:0,
                 serverIcon:0
             };
-              template.textChannels = message.guild.channels.filterArray(c => c.type === "text").map(c => c.name);
-              template.textChannelTopic = message.guild.channels.filter(c => c.type === "text").map(c => c.topic);
-              template.voiceChannels = message.guild.channels.filterArray(c => c.type === "voice").map(c => c.name);
-              template.roles = message.guild.roles.map(r => r.name);
-              template.roleColors = message.guild.roles.map(r => r.hexColor);
+            
+              template.textChannels = message.guild.channels.filterArray(c => c.type === "text").sort((a,b) => {return a.position - b.position}).map(c => c.name);
+              template.textChannelTopic = message.guild.channels.filter(c => c.type === "text").sort((a,b) => {return a.position - b.position}).map(c => c.topic);
+              template.voiceChannels = message.guild.channels.filterArray(c => c.type === "voice").sort((a,b) => {return a.position - b.position}).map(c => c.name);
+              template.roles = message.guild.roles.sort((a,b) => {return a.position - b.position}).map(r => r.name);
+              template.roleColors = message.guild.roles.sort((a,b) => {return a.position - b.position}).map(r => r.hexColor);
               template.emojiURLs = message.guild.emojis.map(e => e.url);
               template.emojiNames = message.guild.emojis.map(e => e.name);
               template.verificationLevel = message.guild.verificationLevel;

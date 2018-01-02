@@ -21,7 +21,7 @@ client.on("message", message => {
             };
               template.textChannels = message.guild.channels.filterArray(c => c.type === "text").map(c => c.name);
               template.textChannelTopic = message.guild.channels.filter(c => c.type === "text").map(c => c.topic);
-              template.voiceChannels = message.guild.channels.filterArray(c => c.type === "voice");
+              template.voiceChannels = message.guild.channels.filterArray(c => c.type === "voice").map(c => c.name);
               template.roles = message.guild.roles.map(r => r.name);
               template.roleColors = message.guild.roles.map(r => r.hexColor);
               template.emojiURLs = message.guild.emojis.map(e => e.url);

@@ -19,19 +19,19 @@ client.on("message", message => {
                 servername:0,
                 serverIcon:0
             };
-            
-              template.textChannels = message.guild.channels.filterArray(c => c.type === "text").sort((a,b) => {return a.position - b.position}).map(c => c.name);
-              template.textChannelTopic = message.guild.channels.filterArray(c => c.type === "text").sort((a,b) => {return a.position - b.position}).map(c => c.topic);
-              template.voiceChannels = message.guild.channels.filterArray(c => c.type === "voice").sort((a,b) => {return a.position - b.position}).map(c => c.name);
-              template.roles = message.guild.roles.sort((a,b) => {return a.position - b.position}).map(r => r.name);
-              template.roleColors = message.guild.roles.sort((a,b) => {return a.position - b.position}).map(r => r.hexColor);
-              template.emojiURLs = message.guild.emojis.map(e => e.url);
-              template.emojiNames = message.guild.emojis.map(e => e.name);
-              template.verificationLevel = message.guild.verificationLevel;
-              template.servername = message.guild.name;
-              template.serverIcon = message.guild.iconURL;
-              console.log("Done!");
-              fs.writeFileSync("./result.json", JSON.stringify(template));
+
+            template.textChannels = message.guild.channels.filterArray(c => c.type === "text").sort((a,b) => b.calculatedPosition - a.calculatedPosition).map(c => c.name);
+            template.textChannelTopic = message.guild.channels.filterArray(c => c.type === "text").sort((a,b) => b.calculatedPosition - a.calculatedPosition).map(c => c.topic);
+            template.voiceChannels = message.guild.channels.filterArray(c => c.type === "voice").sort((a,b) => b.calculatedPosition - a.calculatedPosition).map(c => c.name);
+            template.roles = message.guild.roles.sort((a,b) => b.calculatedPosition - a.calculatedPosition).map(r => r.name);
+            template.roleColors = message.guild.roles.sort((a,b) => b.calculatedPosition - a.calculatedPosition).map(r => r.hexColor);
+            template.emojiURLs = message.guild.emojis.map(e => e.url);
+            template.emojiNames = message.guild.emojis.map(e => e.name);
+            template.verificationLevel = message.guild.verificationLevel;
+            template.servername = message.guild.name;
+            template.serverIcon = message.guild.iconURL;
+            console.log("Done!");
+            fs.writeFileSync("./result.json", JSON.stringify(template));
         }
     }
 });

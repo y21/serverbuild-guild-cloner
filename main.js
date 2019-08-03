@@ -2,36 +2,39 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 const config = require("./config.json");
 const fs = require("fs");
-var template = {};
 
 client.on("message", message => {
     if(message.author.id === client.user.id || message.author.id === config.ownerid){
         if(message.content.startsWith(".guild-clone") && message.guild){
-            var template = {
-                textChannels: [],
-                textChannelTopic: [],
-                voiceChannels: [],
-                roles: [],
-                roleColors: [],
-                emojiURLs: [],
-                emojiNames: [],
-                verificationLevel:0,
-                servername:0,
-                serverIcon:0
-            };
+            const channels = message.guild.channels.map(v => ({
+                name: v.name,
+                topic: v.topic || null,
+                type: v.type,
+                nsfw: v.nsfw || false,
+                ratelimit: v.rateLimitPerUser || null,
+                position: v.position
+            }));
+            const roles = message.guild.roles.map(v => ({
+                name: v.name,
+                permissions: v.permissions.bitfield,
+                color: v.color
+            }));
+            const emojis = message.guild.emojis.map(v => ({
+                name: v.name,
+                url: v.url
+            }));
 
-            template.textChannels = message.guild.channels.filterArray(c => c.type === "text").sort((a,b) => b.calculatedPosition - a.calculatedPosition).map(c => c.name);
-            template.textChannelTopic = message.guild.channels.filterArray(c => c.type === "text").sort((a,b) => b.calculatedPosition - a.calculatedPosition).map(c => c.topic);
-            template.voiceChannels = message.guild.channels.filterArray(c => c.type === "voice").sort((a,b) => b.calculatedPosition - a.calculatedPosition).map(c => c.name);
-            template.roles = message.guild.roles.sort((a,b) => b.calculatedPosition - a.calculatedPosition).map(r => r.name);
-            template.roleColors = message.guild.roles.sort((a,b) => b.calculatedPosition - a.calculatedPosition).map(r => r.hexColor);
-            template.emojiURLs = message.guild.emojis.map(e => e.url);
-            template.emojiNames = message.guild.emojis.map(e => e.name);
-            template.verificationLevel = message.guild.verificationLevel;
-            template.servername = message.guild.name;
-            template.serverIcon = message.guild.iconURL;
             console.log("Done!");
-            fs.writeFileSync("./result.json", JSON.stringify(template));
+            fs.writeFileSync("./result.json", JSON.stringify({
+                channels,
+                roles,
+                emojis,
+                verificationLevel: message.guild.verificationLevel,
+                servername: message.guild.name,
+                serverid: message.guild.id,
+                serverIcon: message.guild.iconURL,
+                timeout: 150
+            }, null, 4));
         }
     }
 });
